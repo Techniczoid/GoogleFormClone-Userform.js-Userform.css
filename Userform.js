@@ -1,24 +1,22 @@
 import { Button, Typography } from '@material-ui/core'
 import React ,{useState,useEffect} from 'react'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import "./user_form.css"
+import "./Userform.css"
 import { useStateValue } from './StateProvider';
 
 import axios from "axios"
 function Userform() {
     var quest = [];
     var post_answer = [];
-    var history = useHistory()
+    var navigate =  useNavigate();
     var [answer,setAnswer] = useState([])
     var [{questions,doc_name,doc_desc},dispatch] = useStateValue()
 
     function select(que,option){
     
-    var k =answer.findIndex((ele)=>(ele.question == que))
+    var k =answer.findIndex((ele)=>(ele.question === que))
 
     answer[k].answer=option
         setAnswer(answer)
@@ -40,7 +38,7 @@ function Userform() {
    var  post_answer_data = {}
 
    function selectinput(que,option){
-        var k =answer.findIndex((ele)=>(ele.question == que))
+        var k =answer.findIndex((ele)=>(ele.question === que))
 
         answer[k].answer=option
         setAnswer(answer)
@@ -49,15 +47,15 @@ function Userform() {
 
    function selectcheck(e,que,option){
         var d =[]
-        var k =answer.findIndex((ele)=>(ele.question == que))
+        var k =answer.findIndex((ele)=>(ele.question === que))
         if(answer[k].answer){
         d=answer[k].answer.split(",")
             }
-        if(e == true){
+        if(e === true){
             d.push(option)
         }
         else{
-            var n=d.findIndex((el)=>(el.option == option))
+            var n=d.findIndex((el)=>(el.option === option))
             d.splice(n,1)
 
         }
@@ -76,7 +74,7 @@ function submit(){
       "answer_data" :[post_answer_data]
   })
 
-  history.push(`/submitted`)
+  navigate(`/submitted`);
 
 }
     return (  
@@ -102,8 +100,8 @@ function submit(){
                                     
                                       {
 
-                                        question.questionType != "radio" ? (  
-                                          question.questionType != 'text' ? (
+                                        question.questionType !== "radio" ? (  
+                                          question.questionType !== 'text' ? (
                                         <label>
                                         <input
                                         
@@ -112,7 +110,7 @@ function submit(){
                                         value= {ques.optionText}
                                         className="form-check-input"
                                         required={question.required}
-                                        style={{margnLeft:"5px",marginRight:"5px"}}
+                                        style={{marginLeft:"5px",marginRight:"5px"}}
                                         onChange={(e)=>{selectcheck(e.target.checked,question.questionText,ques.optionText)}}
                                         /> {ques.optionText}
                                         </label>): (
@@ -125,7 +123,7 @@ function submit(){
                                         value= {ques.optionText}
                                         className="form-check-input"
                                         required={question.required}
-                                        style={{margnLeft:"5px",marginRight:"5px"}}
+                                        style={{marginLeft:"5px",marginRight:"5px"}}
                                         onChange={(e)=>{selectinput(question.questionText,e.target.value)}}
                                         /> {ques.optionText}
                                         </label>
@@ -141,7 +139,7 @@ function submit(){
                                             value= {ques.optionText}
                                             className="form-check-input"
                                             required={question.required}
-                                            style={{margnLeft:"5px",marginRight:"5px"}}
+                                            style={{marginLeft:"5px",marginRight:"5px"}}
                                             onChange={()=>{select(question.questionText,ques.optionText)}}
                                           />
                                       {ques.optionText}
@@ -174,5 +172,4 @@ function submit(){
     )
 }
 
-export default Userform
-
+export default Userform;
